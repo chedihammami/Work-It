@@ -1,1 +1,89 @@
-<p>profile works!</p>
+<!--navbar-->
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<!--employee Profile-->
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="osahan-account-page-left shadow-sm bg-white h-100">
+                <div class="border-bottom p-4">
+                    <div class="osahan-user text-center">
+                        <div class="osahan-user-media">
+                            <img class="mb-3 rounded-pill shadow-sm mt-1" [src]="pic" >
+                            <div class="osahan-user-media-body">
+                                <h6 class="mb-2">{{Student.name}}</h6>
+                                <br>
+                                <h6 class="card-subtitle mb-2 text-block">Phone number:</h6>
+                                <p class="mb-1">{{Student.tel}}</p>
+                                <br>
+                                <h6 class="card-subtitle mb-2 text-block">Email:</h6>
+                                <p>{{Student.email}}</p>
+                              
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <ul class="nav nav-tabs flex-column border-0 pt-4 pl-4 pb-4" id="myTab" role="tablist">
+                    <li class="nav-item">
+                    </li>
+                </ul>
+                
+                    <div class="file btn btn-lg btn-action btn-style ">
+                    Upload CV
+                    <input type="file" name="file" (change)="onFileSelected($event)" #fileUpload>
+                    </div>
+                    <br>    
+                    <div class="file-upload text-center">
+
+                         {{fileName || 'No file uploaded yet.'}}
+
+                        
+                    </div>
+                
+                <br>
+                <button class="btn-style btn btn-action btn-lg " style="color:white"  (click)="ViewCV()">view CV </button>
+            </div>
+            
+        </div>
+        <div class="col-md-9">
+            <div class="osahan-account-page-right shadow-sm bg-white p-4 h-100">
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane  fade  active show" id="offers" role="tabpanel" aria-labelledby="offers-tab">
+                        <h4 class="font-weight-bold mt-0 mb-4">Job applications</h4>
+                        <div class="row mb-4 pb-2">
+                            <div class="col-md-12" *ngFor="let application of JobApplications">
+                                <div class="card offer-card shadow-sm">
+                                    <div class="card-body">
+                                        <h5 class="card-title"> Application ID: {{application.appId}}</h5>
+                                        <h6 class="card-subtitle mb-2 text-block">Your application's motivation:</h6>
+                                        <p class="card-text">{{application.motivation}}</p>
+                                        <h6 class="card-subtitle mb-2 text-block">Application date:</h6>
+                                        <p> {{application.appDate}}</p>
+                                        <h6 class="card-subtitle mb-2 text-block">Status:</h6>
+                                        <p> {{application.status}}</p>
+
+                                        
+                                    </div>
+                                </div>
+                                <br>
+                            </div>
+                            
+                   
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--footer-->
+<app-footer></app-footer>

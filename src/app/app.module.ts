@@ -1,46 +1,54 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { AppRoutingModule } from './app-routing.module';
+import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AboutComponent } from './about/about.component';
-import { CompanyProfileComponent } from './company-profile/company-profile.component';
-import { CompanyRegistrationComponent } from './company-registration/company-registration.component';
-import { CompanySignInComponent } from './company-sign-in/company-sign-in.component';
-import { ContactComponent } from './contact/contact.component';
-import { EmployeeNavbarComponent } from './employee-navbar/employee-navbar.component';
-import { EmployeeRegistrationComponent } from './employee-registration/employee-registration.component';
-import { FooterComponent } from './footer/footer.component';
-import { HomeComponent } from './home/home.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import { ProfileComponent } from './profile/profile.component';
-import { RegistrationComponent } from './registration/registration.component';
+import { FooterComponent } from './footer/footer.component';
 import { SignInComponent } from './sign-in/sign-in.component';
-import { StudentSignInComponent } from './student-sign-in/student-sign-in.component';
+import { ContactComponent } from './contact/contact.component';
+import { AboutComponent } from './about/about.component';
 import { TestimonialComponent } from './testimonial/testimonial.component';
+import { ProfileComponent } from './profile/profile.component';
+import { JobListingComponent } from './job-listing/job-listing.component';
+import { EmployeeRegistrationComponent } from './employee-registration/employee-registration.component';
+import { CompanyRegistrationComponent } from './company-registration/company-registration.component';
+import { RegistrationComponent } from './registration/registration.component';
+import { CompanyProfileComponent } from './company-profile/company-profile.component';
+import { FormsModule, NgForm, NgModel, NgModelGroup , ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { StudentSignInComponent } from './student-sign-in/student-sign-in.component';
+import { CompanySignInComponent } from './company-sign-in/company-sign-in.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AboutComponent,
-    CompanyProfileComponent,
-    CompanyRegistrationComponent,
-    CompanySignInComponent,
-    ContactComponent,
-    EmployeeNavbarComponent,
-    EmployeeRegistrationComponent,
-    FooterComponent,
-    HomeComponent,
+    routingComponents,
     NavbarComponent,
-    ProfileComponent,
-    RegistrationComponent,
+    FooterComponent,
     SignInComponent,
+    ContactComponent,
+    AboutComponent,
+    TestimonialComponent,
+    ProfileComponent,
+    JobListingComponent,
+    EmployeeRegistrationComponent,
+    CompanyRegistrationComponent,
+    RegistrationComponent,
+    CompanyProfileComponent,
     StudentSignInComponent,
-    TestimonialComponent
+    CompanySignInComponent,
+    
+   
+
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule,
+    ReactiveFormsModule
+ 
   ],
   providers: [],
   bootstrap: [AppComponent]
