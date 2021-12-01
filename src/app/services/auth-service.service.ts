@@ -11,7 +11,7 @@ export class AuthServiceService {
   constructor(private HttpClient:HttpClient) { }
   
   login(credentials :any): Observable<any> {
-   return this.HttpClient.post(`${basePath}/users/login`, credentials )
+   return this.HttpClient.post(`${basePath}/users/login`, credentials );
   }
   
  isAuthentificated():boolean{
