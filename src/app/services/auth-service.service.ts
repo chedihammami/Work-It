@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs';
 import  {basePath} from  "../constants";
 
@@ -12,10 +11,15 @@ export class AuthServiceService {
   constructor(private HttpClient:HttpClient) { }
   
   login(credentials :any): Observable<any> {
-   return this.HttpClient.post(`${basePath}/students/login`, credentials )
+   return this.HttpClient.post(`${basePath}/users/login`, credentials )
   }
   
  isAuthentificated():boolean{
-   return !!localStorage.getItem('token');
+   return !!localStorage.getItem('access-token');
+ }
+ authentificate(token: string , role: string) 
+ {
+    localStorage.setItem('access-token',token); 
+    localStorage.setItem('role',role); 
  }
 }

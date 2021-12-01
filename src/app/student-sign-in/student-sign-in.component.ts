@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm , FormControl , Validators} from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthServiceService } from '../services/auth-service.service';
-
+import swal from 'sweetalert2'
 
 @Component({
   selector: 'app-student-sign-in',
@@ -30,7 +30,27 @@ export class StudentSignInComponent implements OnInit {
   }
   signInEmployee()
   {
-     console.log(this.signIn) ; 
+     swal.fire({
+      title: 'Do you want to continue ?',
+      confirmButtonText: 'YES',
+      showCancelButton: true,
+      denyButtonText: 'NO',
+
+     }).then( (result) => 
+     {
+        if ( result.isConfirmed ) 
+        {
+          this.authService.login(JSON.stringify(this.signIn.value)).subscribe( (response) => {
+            this.authService.authentificate(JSON.parse(response).access_token, 'employee'); 
+            swal.fire('' , 'Logged in successfully  .' , 'success');
+         }, err => 
+            {
+                swal.fire('','You are unauthorized', 'error');
+            })
+          console.log(JSON.stringify(this.signIn.value)) ; 
+        }
+     }) 
+     
   }
 
 }
