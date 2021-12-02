@@ -11,7 +11,7 @@
  */
 
 export interface Company { 
-    companyId?: number;
+    id?: number;
     name?: string;
     address?: string;
     website?: string;

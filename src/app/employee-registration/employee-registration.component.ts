@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup , FormControl, Validators, FormBuilder , ReactiveFormsModule } from '@angular/forms';
-import { StudentService } from '../services/student.service';
 import { UserService } from '../services/user.service';
 import { requiredFileType } from '../validators/cv-validator'; 
 import { requiredImageType } from '../validators/image-validator' ; 
@@ -9,7 +8,6 @@ import { User } from '../model/user';
 import { Student } from '../model/student'; 
 import { SignUpServiceService } from '../services/sign-up-service.service'; 
 import swal from 'sweetalert2'; 
-import { removeSummaryDuplicates } from '@angular/compiler';
 @Component({
   selector: 'app-employee-registration',
   templateUrl: './employee-registration.component.html',
@@ -168,9 +166,9 @@ export class EmployeeRegistrationComponent implements OnInit {
             if ( result.isConfirmed )
 
            {  
-               this.http.signUpUser(this.user).subscribe(data => 
+               this.http.signUpUser(JSON.stringify(this.user)).subscribe(data => 
                {
-                  this.http.signUpStudent(this.student).subscribe(data => 
+                  this.http.signUpStudent(JSON.stringify(this.student)).subscribe(data => 
                      {
                         swal.fire({
                            title: 'Student registered Successfully , Proceed to Login',
