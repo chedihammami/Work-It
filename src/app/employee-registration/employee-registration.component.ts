@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup , FormControl, Validators, FormBuilder , ReactiveFormsModule } from '@angular/forms';
 import { StudentService } from '../services/student.service';
-import { Student } from '../Models/student';
 import { UserService } from '../services/user.service';
-import { User } from '../Models/user';
 import { requiredFileType } from '../validators/cv-validator'; 
 import { requiredImageType } from '../validators/image-validator' ; 
-
-
-
+import { User } from '../model/user'; 
+import { Student } from '../model/student'; 
+import { SignUpServiceService } from '../services/sign-up-service.service'; 
+import swal from 'sweetalert2'; 
+import { removeSummaryDuplicates } from '@angular/compiler';
 @Component({
   selector: 'app-employee-registration',
   templateUrl: './employee-registration.component.html',
@@ -17,53 +17,62 @@ import { requiredImageType } from '../validators/image-validator' ;
 })
 export class EmployeeRegistrationComponent implements OnInit {
   public signUpForm: FormGroup ;  
-  student:Student=null;
-  user:User=null;
+  public student: Student ;
+  public user: User ;
   public file: File; 
   public image: File; 
+  public randomID: number; 
   private ALPHA_PATTERN  : RegExp   = /^[a-z]*$/i ; 
   private NUMBER_PATTERN : RegExp = /^[0-9]*$/i ; 
-  constructor(private router:Router, private StudentService:StudentService, private userService:UserService, private fb:FormBuilder) { }
+  constructor(private router:Router, private http:SignUpServiceService, private userService:UserService, private fb:FormBuilder) { }
   
 
 
   ngOnInit(): void {
         this.signUpForm = this.fb.group({
-          username: new FormControl(null,[Validators.required, Validators.pattern(this.ALPHA_PATTERN)]) , 
+          name: new FormControl(null,[Validators.required, Validators.pattern(this.ALPHA_PATTERN)]) , 
           email: new FormControl(null,[Validators.required]) ,
-          phone: new FormControl(null,[Validators.required, Validators.maxLength(8), Validators.maxLength(8),Validators.pattern(this.NUMBER_PATTERN)] ) , 
-          address: new FormControl(null,[Validators.required ]),
+          tel: new FormControl(null,[Validators.required, Validators.maxLength(8), Validators.maxLength(8),Validators.pattern(this.NUMBER_PATTERN)] ) , 
+          location: new FormControl(null,[Validators.required ]),
           school: new FormControl(null, [Validators.required]), 
-          birthDate: new FormControl(null, [Validators.required]), 
+          linkedin: new FormControl(null, [Validators.required]), 
+          education: new FormControl(null, [Validators.required]), 
+          dateOfBirth: new FormControl(null, [Validators.required]), 
+          driverLicense: new FormControl(null, [Validators.required]), 
           gender: new FormControl(null,[Validators.required]),
           password: new FormControl(null, [Validators.required, Validators.minLength(4)]),
           cv : new FormControl(null,[Validators.required]), 
-          img: new FormControl(null, [Validators.required])
+          img: new FormControl(null, [Validators.required]), 
+          languages: new FormControl(false, [Validators.required]), 
         })
   }
-  get username()  
+  get name()  
   {
-     return this.signUpForm.get('username') ; 
+     return this.signUpForm.get('name') ; 
   }
   get email()  
   {
      return this.signUpForm.get('email') ; 
   }
-  get phone()  
+  get languages()  
   {
-     return this.signUpForm.get('phone') ; 
+     return this.signUpForm.get('languages') ; 
   }
-  get address()  
+  get tel()  
   {
-     return this.signUpForm.get('address') ; 
+     return this.signUpForm.get('tel') ; 
+  }
+  get location()  
+  {
+     return this.signUpForm.get('location') ; 
   }
   get school()  
   {
      return this.signUpForm.get('school') ; 
   }
-  get birthDate()  
+  get dateOfBirth()  
   {
-     return this.signUpForm.get('birthDate') ; 
+     return this.signUpForm.get('dateOfBirth') ; 
   }
   get gender()  
   {
@@ -80,6 +89,18 @@ export class EmployeeRegistrationComponent implements OnInit {
   get img()  
   {
      return this.signUpForm.get('img') ; 
+  }
+  get driverLicense()  
+  {
+     return this.signUpForm.get('driverLicense') ; 
+  }
+  get linkedin()  
+  {
+     return this.signUpForm.get('linkedin') ; 
+  }
+  get education()  
+  {
+     return this.signUpForm.get('education') ; 
   }
 
   
@@ -102,9 +123,81 @@ export class EmployeeRegistrationComponent implements OnInit {
         this.img.updateValueAndValidity();
     }
   }
+    createUser()
+    {
+      this.randomID= Math.floor(Math.random() * Date.now()) ; 
+        return { 
+         id: this.randomID,
+         name: this.signUpForm.value.name, 
+         email: this.signUpForm.value.email, 
+         password: this.signUpForm.value.password, 
+         tel: this.signUpForm.value.tel, 
+         role: 'student',
+         gender: this.signUpForm.value.gender      
+     }; 
+   }
+     createStudent()
+     {
+         return {
+             userId: this.randomID, 
+             dateOfBirth: this.signUpForm.value.dateOfBirth,
+             driverLicense: this.signUpForm.value.driverLicense,
+             education: this.signUpForm.value.education,
+             school: this.signUpForm.value.school,
+             languages: ['arabic', 'frensh', 'english'],
+             linkedin: this.signUpForm.value.linkedin,
+             location: this.signUpForm.value.location
+         }
+     }
+    
     signIn() 
     {
-       console.log(this.signUpForm) ; 
+   
+      this.user = this.createUser(); 
+      this.student = this.createStudent();
+   
+      swal.fire({
+         title: "Confirm You Informations !",
+         confirmButtonText: "YES",
+         showCancelButton: true,
+         denyButtonText: 'NO',
+   
+        }).then( (result) => 
+        
+         {
+            if ( result.isConfirmed )
+
+           {  
+               this.http.signUpUser(this.user).subscribe(data => 
+               {
+                  this.http.signUpStudent(this.student).subscribe(data => 
+                     {
+                        swal.fire({
+                           title: 'Student registered Successfully , Proceed to Login',
+                           confirmButtonText: "YES" ,
+                           showCancelButton: true,
+                           denyButtonText: 'No'
+                        }).then( result =>
+                           {
+                             if (result.isConfirmed )
+                              {
+                                 location.replace("http://localhost:4200/signin/studentsignin");
+                              } 
+                           })
+                     }, err => 
+                     {
+                        swal.fire('', 'An Error occured', "error"); 
+      
+                     })        
+               }, err => 
+               {
+                swal.fire('', 'An Error occured in User Registration', 'error') ;  
+             })
+            }
+          }
+        ); 
+      console.log(this.user); 
+      console.log(this.student); 
     }
 
    

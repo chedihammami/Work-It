@@ -8,9 +8,9 @@
     <div class="col-md-6">
         <div class="form-group">
 			<label>Username</label>
-        	<input type="text" class="form-control" name="username" formControlName="username">
+        	<input type="text" class="form-control" name="name" formControlName="name">
         </div>
-        <div *ngIf="username.invalid && username.dirty"
+        <div *ngIf="name.invalid && name.dirty"
             class="alert alert-danger"	>
            Please enter a name
         </div>
@@ -24,17 +24,17 @@
         </div>
         <div class="form-group">
 			<label>Phone number</label>
-        	<input type="text" class="form-control" name="tel" formControlName="phone">
+        	<input type="text" class="form-control" name="tel" formControlName="tel">
         </div>
-        <div *ngIf="phone.invalid && phone.dirty"
+        <div *ngIf="tel.invalid && tel.dirty"
         class="alert alert-danger"	>
         Please enter Phone number
         </div>
         <div class="form-group">
 			<label>Address</label>
-        	<input type="text" class="form-control" name="Address" formControlName="address">
+        	<input type="text" class="form-control" name="Address" formControlName="location">
         </div>
-        <div *ngIf="address.invalid && address.dirty"
+        <div *ngIf="location.invalid && location.dirty"
         class="alert alert-danger"	>
         Please enter an address
         </div>
@@ -46,18 +46,53 @@
         class="alert alert-danger"	>
         Please enter a school
         </div>
+        <div class="form-group">
+			<label>Education Specialty</label>
+        	<input type="text" class="form-control" name="education" formControlName="education">
+        </div>
+        <div *ngIf="education.invalid && education.dirty"
+        class="alert alert-danger"	>
+        Please enter your Education Specialty
+        </div>
+        <div class="form-group">
+			<label>Linkedin Username</label>
+        	<input type="text" class="form-control" name="linkedin" formControlName="linkedin">
+        </div>
+        <div *ngIf="linkedin.invalid && linkedin.dirty"
+        class="alert alert-danger"	>
+        Please enter your Linkedin Username
+        </div>
+        <div class="form-group">
+			<label>Languages</label><br>
+        	<input type="checkbox" id="vehicle1" formControlName="languages" value="arabic"> &nbsp; 
+            <label for="vehicle1"> Arabic</label><br>
+            <input type="checkbox" id="vehicle2" formControlName="languages" value="english"> &nbsp; 
+            <label for="vehicle2"> English</label><br>
+            <input type="checkbox" id="vehicle3" formControlName="languages" value="frensh"> &nbsp; 
+            <label for="vehicle3"> Frensh</label><br>
+        </div>
+        <div *ngIf="languages.invalid && languages.dirty"
+        class="alert alert-danger"	>
+        Please enter your Languages
+        </div>
     </div>
     <div class="col-md-6">
         <div class="form-group">
 			<label>Date of birth</label>
-        	<input type="date" class="form-control" name="Birthdate" formControlName="birthDate">
+        	<input type="date" class="form-control" name="dateOfBirth" formControlName="dateOfBirth">
         </div>
         <div class="form-group">
 			<label>Gender</label>
             <br>
-                <input type="radio" name="gender" value="male"  formControlName="gender" checked> Male<br>
-                <input type="radio" name="gender" value="female" formControlName="gender" > Female<br>
-                <input type="radio" name="gender" value="other" formControlName="gender"  > Other
+                <input type="radio" name="gender" value="M"  formControlName="gender" checked> Male<br>
+                <input type="radio" name="gender" value="F" formControlName="gender" > Female<br>
+                <input type="radio" name="gender" value="X" formControlName="gender"  > Other
+        </div>
+        <div class="form-group">
+			<label>Driver License</label>
+            <br>
+                <input type="radio" name="driverLicense" value="true"  formControlName="driverLicense" checked> True<br>
+                <input type="radio" name="driverLicense" value="false" formControlName="driverLicense" > False<br>
         </div>
 		<div class="form-group">
 			<label>Password</label>

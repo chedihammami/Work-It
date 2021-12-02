@@ -25,5 +25,6 @@ export interface User {
     /**
      * (M) for male, (F) for female, (X) for other
      */
+    role?: string; 
     gender?: string;
 }
