@@ -64,43 +64,41 @@ export class CompanyRegistrationComponent implements OnInit {
   }
   createUser()
     {
-      this.randomID= Math.floor(Math.random() * Date.now()) ; 
         return { 
-         id: this.randomID,
          name: this.companySignUpForm.value.name, 
          email: this.companySignUpForm.value.email, 
          password: this.companySignUpForm.value.password, 
-         tel: this.companySignUpForm.value.tel, 
-         role: 'Employer',
-         gender: 'M'    
+         tel: parseInt(this.companySignUpForm.value.tel), 
+         gender: 'M'  ,
+         role: 'employer'  
      };
     } 
    
    createCompany() 
    {
-      this.randomCompanyID= Math.floor(Math.random() * Date.now()) ; 
+      this.randomCompanyID= parseInt(Math.floor(Math.random() * Date.now()).toString().substring(0,3)) ; 
 
        return  {
-           id: this.randomCompanyID , 
            name: this.companySignUpForm.value.name, 
            address: this.companySignUpForm.value.address,
            website: this.companySignUpForm.value.websiteName, 
-           tel: this.companySignUpForm.value.tel, 
+           tel: parseInt(this.companySignUpForm.value.tel), 
            email: this.companySignUpForm.value.email
        }
    }
-   createEmployer() 
+   createEmployer(userid:number,companyid:number) 
    {
        return {
-           userId: this.randomID, 
-           companyId: this.randomCompanyID 
+           userId: userid, 
+           companyId: companyid 
        }
    }
   signUpCompany()
   {
     this.user = this.createUser() ; 
-    this.employer = this.createEmployer() ; 
     this.company = this.createCompany() ; 
+   
+    console.log(this.user);
     swal.fire({
       title: "Confirm You Informations !",
       confirmButtonText: "YES",
@@ -113,11 +111,12 @@ export class CompanyRegistrationComponent implements OnInit {
          if ( result.isConfirmed )
 
         {  
-            this.http.signUpUser(JSON.stringify(this.user)).subscribe(data => 
+            this.http.signUpUser(this.user).subscribe(data => 
             {
-               this.http.signUpStudent(JSON.stringify(this.company)).subscribe(data => 
+               this.http.createCompany(this.company).subscribe(data1 => 
                   {
-                     this.http.signUpEmployer(JSON.stringify(this.employer)).subscribe(data =>  {
+                     this.employer = this.createEmployer(data.id,data1.id) ; 
+                     this.http.signUpEmployer(this.employer).subscribe(data2 =>  {
                         swal.fire({
                            title: 'Employer registered Successfully , Proceed to Login',
                            confirmButtonText: "YES" ,
@@ -130,10 +129,13 @@ export class CompanyRegistrationComponent implements OnInit {
                                  location.replace("http://localhost:4200/signin/companysignin");
                               } 
                            })
+                     } , err => 
+                     {
+                         swal.fire('', "An Error occured in Employer",'error');
                      })
                   }, err => 
                   {
-                     swal.fire('', 'An Error occured', "error"); 
+                     swal.fire('', 'An Error occured in company', "error"); 
    
                   })        
             }, err => 

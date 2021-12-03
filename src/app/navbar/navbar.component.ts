@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-
+  public hidden:boolean = localStorage.getItem('access_token') ? true : false;
   constructor() { }
 
   ngOnInit(): void {

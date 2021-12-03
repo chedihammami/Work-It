@@ -40,14 +40,14 @@ export class StudentSignInComponent implements OnInit {
      {
         if ( result.isConfirmed ) 
         {
-          this.authService.login(JSON.stringify(this.signIn.value)).subscribe( (response) => {
-            this.authService.authentificate(JSON.parse(response).access_token, 'employee'); 
+           console.log(this.signIn.value);
+          this.authService.login(this.signIn.value).subscribe( (response) => {
+            this.authService.authentificate(response.access_token, 'employee'); 
             swal.fire('' , 'Logged in successfully  .' , 'success');
          }, err => 
             {
                 swal.fire('','You are unauthorized', 'error');
             })
-          console.log(JSON.stringify(this.signIn.value)) ; 
         }
      }) 
      

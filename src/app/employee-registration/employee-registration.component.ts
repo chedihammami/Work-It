@@ -7,6 +7,8 @@ import { requiredImageType } from '../validators/image-validator' ;
 import { User } from '../model/user'; 
 import { Student } from '../model/student'; 
 import { SignUpServiceService } from '../services/sign-up-service.service'; 
+import { userId } from '../constants';
+import { incrementUser } from '../constants';
 import swal from 'sweetalert2'; 
 @Component({
   selector: 'app-employee-registration',
@@ -19,7 +21,6 @@ export class EmployeeRegistrationComponent implements OnInit {
   public user: User ;
   public file: File; 
   public image: File; 
-  public randomID: number; 
   private ALPHA_PATTERN  : RegExp   = /^[a-z]*$/i ; 
   private NUMBER_PATTERN : RegExp = /^[0-9]*$/i ; 
   constructor(private router:Router, private http:SignUpServiceService, private userService:UserService, private fb:FormBuilder) { }
@@ -123,26 +124,25 @@ export class EmployeeRegistrationComponent implements OnInit {
   }
     createUser()
     {
-      this.randomID= Math.floor(Math.random() * Date.now()) ; 
+  
         return { 
-         id: this.randomID,
          name: this.signUpForm.value.name, 
          email: this.signUpForm.value.email, 
          password: this.signUpForm.value.password, 
-         tel: this.signUpForm.value.tel, 
+         tel: parseInt(this.signUpForm.value.tel), 
          role: 'student',
          gender: this.signUpForm.value.gender      
      }; 
    }
-     createStudent()
+     createStudent(id:number)
      {
          return {
-             userId: this.randomID, 
+             userId: id,
              dateOfBirth: this.signUpForm.value.dateOfBirth,
-             driverLicense: this.signUpForm.value.driverLicense,
+             driverLicense: this.signUpForm.value.driverLicense === "true"? true : false,
              education: this.signUpForm.value.education,
              school: this.signUpForm.value.school,
-             languages: ['arabic', 'frensh', 'english'],
+             languages: ['arabic'],
              linkedin: this.signUpForm.value.linkedin,
              location: this.signUpForm.value.location
          }
@@ -150,10 +150,7 @@ export class EmployeeRegistrationComponent implements OnInit {
     
     signIn() 
     {
-   
       this.user = this.createUser(); 
-      this.student = this.createStudent();
-   
       swal.fire({
          title: "Confirm You Informations !",
          confirmButtonText: "YES",
@@ -161,32 +158,32 @@ export class EmployeeRegistrationComponent implements OnInit {
          denyButtonText: 'NO',
    
         }).then( (result) => 
-        
          {
             if ( result.isConfirmed )
 
            {  
-               this.http.signUpUser(JSON.stringify(this.user)).subscribe(data => 
+               this.http.signUpUser(this.user).subscribe(data => 
                {
-                  this.http.signUpStudent(JSON.stringify(this.student)).subscribe(data => 
-                     {
-                        swal.fire({
-                           title: 'Student registered Successfully , Proceed to Login',
-                           confirmButtonText: "YES" ,
-                           showCancelButton: true,
-                           denyButtonText: 'No'
-                        }).then( result =>
-                           {
-                             if (result.isConfirmed )
+                  this.student = this.createStudent(data.id); 
+                     this.http.signUpStudent(this.student).subscribe(data => 
+                        {
+                           swal.fire({
+                              title: 'Student registered Successfully , Proceed to Login',
+                              confirmButtonText: "YES" ,
+                              showCancelButton: true,
+                              denyButtonText: 'No'
+                           }).then( result =>
                               {
-                                 location.replace("http://localhost:4200/signin/studentsignin");
-                              } 
-                           })
-                     }, err => 
-                     {
-                        swal.fire('', 'An Error occured', "error"); 
-      
-                     })        
+                                if (result.isConfirmed )
+                                 {
+                                    location.replace("http://localhost:4200/signin/studentsignin");
+                                 } 
+                              })
+                        }, err => 
+                        {
+                           swal.fire('', 'An Error occured', "error"); 
+         
+                        })                         
                }, err => 
                {
                 swal.fire('', 'An Error occured in User Registration', 'error') ;  
@@ -194,8 +191,6 @@ export class EmployeeRegistrationComponent implements OnInit {
             }
           }
         ); 
-      console.log(this.user); 
-      console.log(this.student); 
     }
 
    
