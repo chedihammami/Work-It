@@ -1,0 +1,25 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import  {basePath} from  "../constants";
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthServiceService {
+
+  constructor(private HttpClient:HttpClient) { }
+  
+  login(credentials :any): Observable<any> {
+   return this.HttpClient.post(`${basePath}/users/login`, credentials );
+  }
+  
+ isAuthentificated():boolean{
+   return !!localStorage.getItem('access-token');
+ }
+ authentificate(token: string , role: string) 
+ {
+    localStorage.setItem('access-token',token); 
+    localStorage.setItem('role',role); 
+ }
+}

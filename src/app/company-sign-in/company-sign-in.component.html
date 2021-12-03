@@ -1,0 +1,59 @@
+
+	<!-- container -->
+	<div class="container">
+
+
+		<div class="row">
+			
+            <br>
+            <br>
+			<!-- Article main content -->
+			<article class="col-xs-12 maincontent">
+			
+				
+				<div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<h3 class="thin text-center">Sign in as a company</h3>
+							<p class="text-center text-muted"> sign in now and find our latest opportunities. </p>
+							<hr>
+							
+							<form  [formGroup]='signInForm' (ngSubmit)='signInCompany()'>
+								<div class="top-margin form-group">
+									<label>Email <span class="text-danger">*</span></label>
+									<input name="email" email   class="form-control" type="email" formControlName="email">
+								</div>
+								<div *ngIf="email.invalid && email.dirty"
+									class="alert alert-danger"	>
+								Please enter a valid email
+								</div>
+								<div class="top-margin form-group">
+									<label>Password <span class="text-danger">*</span></label>
+									<input  name="password" type="password" class="form-control" formControlName="password">
+								</div>
+								<div *ngIf="password.invalid && password.dirty"
+									class="alert alert-danger"	>
+									Please enter a valid password: minimum length is 4
+								</div>
+
+								<hr>
+
+								<div class="row">
+									<div class="col-lg-8">
+										<p class="text-center">D'ont have an Account ? <span><a routerLink="/registration/companyRegistration" routerLinkActive="active" >Create One</a></span> </p>
+									</div>
+									<div class="col-lg-4 text-right">
+										<input class="btn btn-action" [disabled]="signInForm.invalid" type="submit" value="Sign In"/>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+
+				</div>
+			
+			</article>
+			<!-- /Article -->
+
+		</div>
+	</div>	<!-- /container -->
